@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VideoChat | اتاق گفتگو</title>
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+
+            background: #050816;
+
+            color: white;
+
+            min-height: 100vh;
+        }
+
+        .room {
+            width: 94%;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 20px 0 30px;
+        }
+
+        .topbar {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            font-size: 22px;
+
+            font-weight: bold;
+        }
+
+        .room-info {
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        .videos {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 15px;
+        }
+
+        .video-box {
+            position: relative;
+
+            background: #111827;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            min-height: 240px;
+        }
+
+        video {
+            width: 100%;
+
+            height: 100%;
+
+            min-height: 240px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #020617;
+        }
+
+        .video-name {
+            position: absolute;
+
+            right: 12px;
+
+            bottom: 12px;
+
+            padding: 7px 11px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.65);
+
+            font-size: 13px;
+        }
+
+        .waiting {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 240px;
+
+            color: #94a3b8;
+
+            text-align: center;
+
+            padding: 25px;
+
+            line-height: 1.9;
+        }
+
+        .controls {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .control {
+            min-width: 54px;
+
+            min-height: 50px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background: #1e293b;
+
+            color: white;
+
+            font-size: 19px;
+
+            cursor: pointer;
+        }
+
+        .control:hover {
+            background: #334155;
+        }
+
+        .control.leave {
+            background: #dc2626;
+        }
+
+        .control.leave:hover {
+            background: #b91c1c;
+        }
+
+        .status {
+            text-align: center;
+
+            margin-top: 15px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            min-height: 22px;
+        }
+
+        @media (max-width: 600px) {
+
+            .room {
+                width: 95%;
+            }
+
+            .topbar {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .videos {
+                grid-template-columns: 1fr;
+            }
+
+            .video-box,
+            video {
+                min-height: 220px;
+            }
+
+            .control {
+                flex: 1;
+
+                min-width: 65px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <main class="room">
+
+        <header class="topbar">
+
+            <div class="brand">
+                🎥 VideoChat
+            </div>
+
+            <div
+                id="roomInfo"
+                class="room-info"
+            >
+                در حال اتصال...
+            </div>
+
+        </header>
+
+
+        <section
+            id="videos"
+            class="videos"
+        >
+
+            <div
+                id="localBox"
+                class="video-box"
+            >
+
+                <video
+                    id="localVideo"
+                    autoplay
+                    muted
+                    playsinline
+                ></video>
+
+                <div
+                    id="localName"
+                    class="video-name"
+                >
+                    شما
+                </div>
+
+            </div>
+
+
+            <div
+                id="waitingBox"
+                class="video-box"
+            >
+
+                <div class="waiting">
+
+                    👥
+
+                    <br>
+
+                    منتظر ورود افراد دیگر هستیم...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="controls">
+
+            <button
+                id="micButton"
+                class="control"
+                type="button"
+                title="میکروفون"
+            >
+                🎤
+            </button>
+
+
+            <button
+                id="cameraButton"
+                class="control"
+                type="button"
+                title="دوربین"
+            >
+                📹
+            </button>
+
+
+            <button
+                id="screenButton"
+                class="control"
+                type="button"
+                title="اشتراک صفحه"
+            >
+                🖥️
+            </button>
+
+
+            <button
+                id="copyButton"
+                class="control"
+                type="button"
+                title="کپی لینک اتاق"
+            >
+                🔗
+            </button>
+
+
+            <button
+                id="leaveButton"
+                class="control leave"
+                type="button"
+                title="خروج"
+            >
+                🚪
+            </button>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status"
+            aria-live="polite"
+        >
+            در حال آماده‌سازی دوربین...
+        </div>
+
+    </main>
+
+
+    <!-- PeerJS -->
+    <script
+        src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"
+    ></script>
+
+
+    <script>
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const roomCode =
+            params.get("room");
+
+
+        const username =
+            params.get("name") ||
+            "مهمان";
+
+
+        const localVideo =
+            document.getElementById(
+                "localVideo"
+            );
+
+
+        const localName =
+            document.getElementById(
+                "localName"
+            );
+
+
+        const roomInfo =
+            document.getElementById(
+                "roomInfo"
+            );
+
+
+        const status =
+            document.getElementById(
+                "status"
+            );
+
+
+        const waitingBox =
+            document.getElementById(
+                "waitingBox"
+            );
+
+
+        const micButton =
+            document.getElementById(
+                "micButton"
+            );
+
+
+        const cameraButton =
+            document.getElementById(
+                "cameraButton"
+            );
+
+
+        const screenButton =
+            document.getElementById(
+                "screenButton"
+            );
+
+
+        const copyButton =
+            document.getElementById(
+                "copyButton"
+            );
+
+
+        const leaveButton =
+            document.getElementById(
+                "leaveButton"
+            );
+
+
+        let localStream = null;
+
+        let peer = null;
+
+        let micEnabled = true;
+
+        let cameraEnabled = true;
+
+
+        localName.textContent =
+            username;
+
+
+        roomInfo.textContent =
+            roomCode
+                ? `اتاق: ${roomCode}`
+                : "بدون کد اتاق";
+
+
+        function setStatus(text) {
+
+            status.textContent = text;
+
+        }
+
+
+        async function startCamera() {
+
+            try {
+
+                localStream =
+                    await navigator.mediaDevices
+                        .getUserMedia({
+                            video: true,
+                            audio: true
+                        });
+
+
+                localVideo.srcObject =
+                    localStream;
+
+
+                setStatus(
+                    "دوربین و میکروفون آماده هستند 🎥"
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                setStatus(
+                    "دسترسی به دوربین یا میکروفون داده نشد."
+                );
+
+            }
+
+        }
+
+
+        function createPeer() {
+
+            if (!roomCode) {
+
+                setStatus(
+                    "کد اتاق پیدا نشد."
+                );
+
+                return;
+
+            }
+
+
+            peer =
+                new Peer();
+
+
+            peer.on(
+                "open",
+                peerId => {
+
+                    setStatus(
+                        "به سرور اتصال برقرار شد."
+                    );
+
+                }
+            );
+
+
+            peer.on(
+                "call",
+                call => {
+
+                    if (!localStream) {
+                        return;
+                    }
+
+
+                    call.answer(
+                        localStream
+                    );
+
+
+                    call.on(
+                        "stream",
+                        remoteStream => {
+
+                            addRemoteVideo(
+                                remoteStream,
+                                "مهمان"
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+            peer.on(
+                "error",
+                error => {
+
+                    console.error(error);
+
+                    setStatus(
+                        "خطایی در اتصال ایجاد شد."
+                    );
+
+                }
+            );
+
+        }
+
+
+        function addRemoteVideo(
+            stream,
+            name
+        ) {
+
+            waitingBox.remove();
+
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "video-box";
+
+
+            const video =
+                document.createElement(
+                    "video"
+                );
+
+
+            video.autoplay = true;
+
+            video.playsInline = true;
+
+            video.srcObject =
+                stream;
+
+
+            const nameLabel =
+                document.createElement(
+                    "div"
+                );
+
+
+            nameLabel.className =
+                "video-name";
+
+
+            nameLabel.textContent =
+                name;
+
+
+            box.appendChild(video);
+
+            box.appendChild(nameLabel);
+
+
+            document
+                .getElementById("videos")
+                .appendChild(box);
+
+        }
+
+
+        micButton.addEventListener(
+            "click",
+            () => {
+
+                if (!localStream) {
+                    return;
+                }
+
+
+                const tracks =
+                    localStream.getAudioTracks();
+
+
+                tracks.forEach(
+                    track => {
+
+                        track.enabled =
+                            !track.enabled;
+
+                        micEnabled =
+                            track.enabled;
+
+                    }
+                );
+
+
+                micButton.textContent =
+                    micEnabled
+                        ? "🎤"
+                        : "🔇";
+
+            }
+        );
+
+
+        cameraButton.addEventListener(
+            "click",
+            () => {
+
+                if (!localStream) {
+                    return;
+                }
+
+
+                const tracks =
+                    localStream.getVideoTracks();
+
+
+                tracks.forEach(
+                    track => {
+
+                        track.enabled =
+                            !track.enabled;
+
+                        cameraEnabled =
+                            track.enabled;
+
+                    }
+                );
+
+
+                cameraButton.textContent =
+                    cameraEnabled
+                        ? "📹"
+                        : "🚫";
+
+            }
+        );
+
+
+        screenButton.addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    !navigator.mediaDevices ||
+                    !navigator.mediaDevices.getDisplayMedia
+                ) {
+
+                    setStatus(
+                        "اشتراک صفحه در این مرورگر پشتیبانی نمی‌شود."
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const screenStream =
+                        await navigator.mediaDevices
+                            .getDisplayMedia({
+                                video: true
+                            });
+
+
+                    const screenTrack =
+                        screenStream
+                            .getVideoTracks()[0];
+
+
+                    const oldTrack =
+                        localStream
+                            ?.getVideoTracks()[0];
+
+
+                    if (oldTrack) {
+
+                        localStream.removeTrack(
+                            oldTrack
+                        );
+
+                    }
+
+
+                    localStream.addTrack(
+                        screenTrack
+                    );
+
+
+                    localVideo.srcObject =
+                        localStream;
+
+
+                    screenTrack.addEventListener(
+                        "ended",
+                        async () => {
+
+                            const cameraStream =
+                                await navigator.mediaDevices
+                                    .getUserMedia({
+                                        video: true,
+                                        audio: false
+                                    });
+
+
+                            const cameraTrack =
+                                cameraStream
+                                    .getVideoTracks()[0];
+
+
+                            localStream.addTrack(
+                                cameraTrack
+                            );
+
+
+                            localVideo.srcObject =
+                                localStream;
+
+                        }
+                    );
+
+
+                    setStatus(
+                        "اشتراک صفحه فعال شد 🖥️"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    setStatus(
+                        "اشتراک صفحه لغو شد."
+                    );
+
+                }
+
+            }
+        );
+
+
+        copyButton.addEventListener(
+            "click",
+            async () => {
+
+                const url =
+                    window.location.href;
+
+
+                try {
+
+                    await navigator.clipboard
+                        .writeText(url);
+
+
+                    setStatus(
+                        "لینک اتاق کپی شد 🔗"
+                    );
+
+                } catch {
+
+                    setStatus(
+                        "لینک اتاق: " + url
+                    );
+
+                }
+
+            }
+        );
+
+
+        leaveButton.addEventListener(
+            "click",
+            () => {
+
+                if (localStream) {
+
+                    localStream
+                        .getTracks()
+                        .forEach(
+                            track => track.stop()
+                        );
+
+                }
+
+
+                if (peer) {
+
+                    peer.destroy();
+
+                }
+
+
+                window.location.href =
+                    "./index.html";
+
+            }
+        );
+
+
+        async function start() {
+
+            await startCamera();
+
+            createPeer();
+
+        }
+
+
+        start();
+
+    </script>
+
+</body>
+
+</html>
