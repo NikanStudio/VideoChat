@@ -1,1 +1,119 @@
-VideoChat
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VideoChat | گفت‌وگوی تصویری آنلاین</title>
+
+    <meta
+        name="description"
+        content="VideoChat؛ گفت‌وگوی تصویری آنلاین بدون نیاز به ثبت‌نام و ایمیل."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+    <main class="app">
+
+        <section class="hero">
+
+            <div class="logo">
+                🎥
+            </div>
+
+            <h1>
+                VideoChat
+            </h1>
+
+            <p>
+                گفت‌وگوی تصویری ساده، سریع و بدون ثبت‌نام
+            </p>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>
+                وارد اتاق شو
+            </h2>
+
+            <p class="description">
+                یک نام برای خودت انتخاب کن و وارد گفت‌وگوی تصویری شو.
+            </p>
+
+            <label for="username">
+                نام شما
+            </label>
+
+            <input
+                id="username"
+                type="text"
+                maxlength="30"
+                placeholder="مثلاً نیکان"
+                autocomplete="off"
+            >
+
+            <button
+                id="createRoom"
+                type="button"
+            >
+                🚀 ساخت اتاق جدید
+            </button>
+
+            <div class="divider">
+                <span>یا</span>
+            </div>
+
+            <label for="roomCode">
+                کد اتاق
+            </label>
+
+            <input
+                id="roomCode"
+                type="text"
+                placeholder="کد اتاق را وارد کنید"
+                autocomplete="off"
+            >
+
+            <button
+                id="joinRoom"
+                type="button"
+                class="secondary"
+            >
+                🔗 ورود به اتاق
+            </button>
+
+            <p
+                id="message"
+                class="message"
+            ></p>
+
+        </section>
+
+
+        <footer>
+            ساخته شده با ❤️ توسط NIKAN STUDIO
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
