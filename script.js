@@ -1,10 +1,17 @@
-const usernameInput = document.getElementById("username");
-const roomCodeInput = document.getElementById("roomCode");
+const usernameInput =
+    document.getElementById("username");
 
-const createRoomButton = document.getElementById("createRoom");
-const joinRoomButton = document.getElementById("joinRoom");
+const roomCodeInput =
+    document.getElementById("roomCode");
 
-const message = document.getElementById("message");
+const createRoomButton =
+    document.getElementById("createRoom");
+
+const joinRoomButton =
+    document.getElementById("joinRoom");
+
+const message =
+    document.getElementById("message");
 
 
 function showMessage(text) {
@@ -23,7 +30,8 @@ function createRoomCode() {
 
         const randomIndex =
             Math.floor(
-                Math.random() * characters.length
+                Math.random() *
+                characters.length
             );
 
         code += characters[randomIndex];
@@ -64,11 +72,38 @@ function getUsername() {
 }
 
 
+function openRoom(
+    roomCode,
+    username
+) {
+
+    const url =
+        new URL(
+            "room.html",
+            window.location.href
+        );
+
+    url.searchParams.set(
+        "room",
+        roomCode
+    );
+
+    url.searchParams.set(
+        "name",
+        username
+    );
+
+    window.location.href =
+        url.toString();
+}
+
+
 createRoomButton.addEventListener(
     "click",
     () => {
 
-        const username = getUsername();
+        const username =
+            getUsername();
 
         if (!username) {
             return;
@@ -77,18 +112,11 @@ createRoomButton.addEventListener(
         const roomCode =
             createRoomCode();
 
-        const url =
-            new URL(
-                window.location.href
-            );
-
-        url.searchParams.set(
-            "room",
-            roomCode
+        openRoom(
+            roomCode,
+            username
         );
 
-        window.location.href =
-            url.toString();
     }
 );
 
@@ -97,7 +125,8 @@ joinRoomButton.addEventListener(
     "click",
     () => {
 
-        const username = getUsername();
+        const username =
+            getUsername();
 
         if (!username) {
             return;
@@ -130,18 +159,11 @@ joinRoomButton.addEventListener(
             return;
         }
 
-        const url =
-            new URL(
-                window.location.href
-            );
-
-        url.searchParams.set(
-            "room",
-            roomCode
+        openRoom(
+            roomCode,
+            username
         );
 
-        window.location.href =
-            url.toString();
     }
 );
 
@@ -158,6 +180,7 @@ roomCodeInput.addEventListener(
                     ""
                 )
                 .slice(0, 12);
+
     }
 );
 
@@ -176,4 +199,5 @@ if (currentRoom) {
     showMessage(
         `کد اتاق: ${currentRoom.toUpperCase()}`
     );
+
 }
