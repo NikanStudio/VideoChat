@@ -77,30 +77,32 @@ function openRoom(
     username
 ) {
 
-    const url =
+    const roomUrl =
         new URL(
             "room.html",
             window.location.href
         );
 
-    url.searchParams.set(
+    roomUrl.searchParams.set(
         "room",
         roomCode
     );
 
-    url.searchParams.set(
+    roomUrl.searchParams.set(
         "name",
         username
     );
 
     window.location.href =
-        url.toString();
+        roomUrl.href;
 }
 
 
+/* ساخت اتاق */
+
 createRoomButton.addEventListener(
     "click",
-    () => {
+    function () {
 
         const username =
             getUsername();
@@ -121,9 +123,11 @@ createRoomButton.addEventListener(
 );
 
 
+/* ورود به اتاق */
+
 joinRoomButton.addEventListener(
     "click",
-    () => {
+    function () {
 
         const username =
             getUsername();
@@ -168,9 +172,11 @@ joinRoomButton.addEventListener(
 );
 
 
+/* تبدیل خودکار کد اتاق به حروف بزرگ */
+
 roomCodeInput.addEventListener(
     "input",
-    () => {
+    function () {
 
         roomCodeInput.value =
             roomCodeInput.value
@@ -185,19 +191,37 @@ roomCodeInput.addEventListener(
 );
 
 
-const currentRoom =
+/* اگر کد اتاق از قبل داخل لینک بود */
+
+const params =
     new URLSearchParams(
         window.location.search
-    ).get("room");
+    );
+
+const existingRoom =
+    params.get("room");
+
+const existingName =
+    params.get("name");
 
 
-if (currentRoom) {
+if (existingRoom) {
 
     roomCodeInput.value =
-        currentRoom.toUpperCase();
+        existingRoom.toUpperCase();
 
     showMessage(
-        `کد اتاق: ${currentRoom.toUpperCase()}`
+        "کد اتاق آماده است. نامت را وارد کن و وارد شو."
     );
+
+}
+
+
+/* اگر اسم قبلاً داخل لینک بود، آن را نگه دار */
+
+if (existingName) {
+
+    usernameInput.value =
+        existingName;
 
 }
