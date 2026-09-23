@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
 
@@ -12,12 +13,7 @@
 
     <meta
         name="description"
-        content="VideoChat؛ گفت‌وگوی تصویری آنلاین بدون نیاز به ثبت‌نام و ایمیل."
-    >
-
-    <meta
-        name="robots"
-        content="index, follow"
+        content="گفت‌وگوی تصویری آنلاین بدون نیاز به ثبت‌نام"
     >
 
     <link
@@ -41,11 +37,10 @@
             </h1>
 
             <p>
-                گفت‌وگوی تصویری ساده، سریع و بدون ثبت‌نام
+                گفت‌وگوی تصویری ساده و بدون ثبت‌نام
             </p>
 
         </section>
-
 
         <section class="card">
 
@@ -54,7 +49,8 @@
             </h2>
 
             <p class="description">
-                یک نام برای خودت انتخاب کن و وارد گفت‌وگوی تصویری شو.
+                نامت را وارد کن و یک اتاق تصویری بساز
+                یا با کد اتاق وارد یک اتاق موجود شو.
             </p>
 
             <label for="username">
@@ -87,7 +83,8 @@
             <input
                 id="roomCode"
                 type="text"
-                placeholder="کد اتاق را وارد کنید"
+                maxlength="12"
+                placeholder="مثلاً AB7K2Q"
                 autocomplete="off"
             >
 
@@ -102,10 +99,10 @@
             <p
                 id="message"
                 class="message"
+                aria-live="polite"
             ></p>
 
         </section>
-
 
         <footer>
             ساخته شده با ❤️ توسط NIKAN STUDIO
@@ -116,4 +113,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
